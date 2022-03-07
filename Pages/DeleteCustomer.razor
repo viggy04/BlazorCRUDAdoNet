@@ -1,0 +1,64 @@
+﻿@page "/DeleteCustomer/{CurrentId}"
+
+@using System;
+@inject CustomerService ObjCustomService
+@inject NavigationManager NavigationManager
+
+
+<h3>Delete Customer</h3>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Customer ID:</label>
+            <label>@objCI.CustId</label>
+        </div>
+        <div class="form-group">
+            <label>Name:</label>
+            <label>@objCI.Name</label>
+        </div>
+        <div class="form-group">
+            <label>Gender:</label>
+            <label>@objCI.Gender</label>
+        </div>
+        <div class="form-group">
+            <label>Country:</label>
+            <label>@objCI.Country</label>
+        </div>
+        <div class="form-group">
+            <label>City:</label>
+            <label>@objCI.City</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="button" @onclick="@DeleteCustomers" class="btn btn-primary" value="Delete" />
+            <input type="button" @onclick="@Cancel" class="btn btn-primary" value="Cancel" />
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string CurrentID { get; set; }
+    CustomerInfo objCI = new CustomerInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objCI = ObjCustomService.GetCustomerByID(int.Parse(CurrentID));
+    }
+    protected void DeleteCustomers()
+    {
+        ObjCustomService.DeleteCustomer(objCI);
+        NavigationManager.NavigateTo("Customer");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Customer");
+    }
+
+}
